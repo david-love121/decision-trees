@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "bazel build //decision-tree:decision_tree",
+            "label": "bazel build //decision_tree:decision_tree",
             "type": "shell",
             "command": "bazel",
             "args": [
@@ -10,7 +10,7 @@
                 "--compilation_mode=dbg",
                 "--strip=never",
 
-                "//decision-tree:decision_tree"
+                "//decision_tree:decision_tree"
             ],
             "group": {
                 "kind": "build",

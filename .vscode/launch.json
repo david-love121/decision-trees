@@ -5,10 +5,10 @@
             "name": "Debug decision_tree (CodeLLDB)",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/bazelbin/decision-tree/decision_tree",
+            "program": "${workspaceFolder}/bin/bazelbin/decision_tree/decision_tree",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "bazel build //decision-tree:decision_tree",
+            "preLaunchTask": "bazel build //decision_tree:decision_tree",
             "env": {},
             "initCommands": [
                 "breakpoint set --name main"
