@@ -13,6 +13,9 @@ public:
     void setHead(Node<T>* root) { head_ = root; nodeMap_[root->getId()] = root; }
     void runTree(T input) { head_->runInput(input); }
     void addNodes(Node<T>* newNodeL, Node<T>* newNodeR, int prevId) {nodeMap_[prevId]->setChildren(newNodeL, newNodeR); }
+    void calculateAllImpurity() {
+        head_->calculateImpurityForward();
+    }
 private:
     Node<T>* head_;
     std::map<int, Node<T>*> nodeMap_;

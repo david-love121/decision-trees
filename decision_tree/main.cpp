@@ -56,8 +56,9 @@ void runAllExamples(const std::vector<DataContainer>& containers, Node<double>* 
     for (int i = 0; i < containers.size(); i++) {
         runTrainingExample(containers.at(i), head);
     }
-    
 }
+
+
 
 int main() {
     //So I can easily change the type of the tree without updating every reference to it
@@ -69,8 +70,8 @@ int main() {
     const std::vector<DataContainer> csvData = readCsvToContainers();
     const int nClassifications = 3;
     runAllExamples(csvData, headNode);
-    
+    tree.calculateAllImpurity();
     auto featMap = tree.getHead()->getFeatureMap();
-    
+    double headImpurity = headNode->getImpurity();
     return 0;
 }
