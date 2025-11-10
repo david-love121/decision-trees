@@ -16,8 +16,11 @@ public:
     void calculateAllImpurity() {
         head_->calculateImpurityForward();
     }
+
+
 private:
     Node<T>* head_;
     std::map<int, Node<T>*> nodeMap_;
+    
 
 };

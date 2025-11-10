@@ -35,7 +35,7 @@ std::vector<DataContainer> readCsvToContainers(const std::string& filePath = "./
             i++;
             features.push_back(std::stod(cell));
         }
-        DataContainer container(DataContainer::nextId(), features, cell);
+        DataContainer container(features, cell);
         containers.push_back(container);
 
         if (features.empty()) {
@@ -45,10 +45,10 @@ std::vector<DataContainer> readCsvToContainers(const std::string& filePath = "./
 
     return containers;
 }
-// Can be overloaded for other types, this works specifically for features = double. Returns the id of the last node
-void runTrainingExample(const DataContainer& container, Node<double>* head) {
-    const Node<double>* finishingContainer = head->runInput(container);
-    return;
+// Can be overloaded for other types, this works specifically for features = double. Returns ptr to last node
+Node<double>* runTrainingExample(const DataContainer& container, Node<double>* head) {
+    Node<double>* finishingContainer = head->runInput(container);
+    return finishingContainer;
 };
 //Runs all examples, results are stored in the unordered map of each node
 void runAllExamples(const std::vector<DataContainer>& containers, Node<double>* head) {
@@ -56,6 +56,15 @@ void runAllExamples(const std::vector<DataContainer>& containers, Node<double>* 
     for (int i = 0; i < containers.size(); i++) {
         runTrainingExample(containers.at(i), head);
     }
+}
+//Returns a map of where each container will land
+std::unordered_map<DataContainer, Node<double>*> runAllExamplesMemoized(const std::vector<DataContainer>& containers, Node<double>* head) {
+    std::unordered_map<DataContainer, Node<double>*> memoizedMap;
+    for (int i = 0; i < containers.size(); i++) {
+        Node<double>* finishContainer = runTrainingExample(containers.at(i), head); 
+        memoizedMap[containers.at(i)] = finishContainer;
+    }
+    return memoizedMap;
 }
 
 
@@ -69,7 +78,10 @@ int main() {
     
     const std::vector<DataContainer> csvData = readCsvToContainers();
     const int nClassifications = 3;
-    runAllExamples(csvData, headNode);
+    auto map = runAllExamplesMemoized(csvData, headNode);
+    for (auto [key, value] : map) {
+        
+    }
     tree.calculateAllImpurity();
     auto featMap = tree.getHead()->getFeatureMap();
     double headImpurity = headNode->getImpurity();

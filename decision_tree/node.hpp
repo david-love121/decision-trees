@@ -56,14 +56,14 @@ public:
     //Increments and returns new value
     int incrementSamples() { nSamples++; return nSamples; }
     //returns the node which the container finishes on
-    const Node* runInput(const DataContainer& container) {
+    Node* runInput(const DataContainer& container) {
         frozen = false;
         incrementSamples();
         std::vector<T> features = container.getFeatures();
         std::string label = container.getLabel();
         this->featuresMap.emplace(label, 0);
         featuresMap[label] += 1;
-        const Node* currentNode = this;
+        Node* currentNode = this;
         if (leftChild == nullptr || rightChild == nullptr) {
             return currentNode;
         }
