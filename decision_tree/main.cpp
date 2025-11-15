@@ -1,7 +1,8 @@
-#include "decision_tree.hpp"
+
 #include "node.hpp"
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -10,72 +11,24 @@
 #include <stdexcept>
 #include <map>
 #include <unordered_map>
-#include "../data_container/data_container.hpp"
+#include "decision_tree.hpp"
 
-std::vector<DataContainer*> readCsvToContainers(const std::string& filePath = "./data/iris.data", int featureLength = 4) {
-    std::ifstream file(filePath);
-    if (!file.is_open()) {
-        throw std::runtime_error("Failed to open CSV file at " + filePath);
-    }
-
-    std::vector<DataContainer*> containers;
-    std::string line;
-
-    while (std::getline(file, line)) {
-        if (line.empty()) {
-            continue;
-        }
-
-        std::vector<double> features;
-        std::stringstream ss(line);
-        std::string cell;
-        //Parse each item into an object which contains a feature vector of doubles and a classification string
-        int i = 0;
-        while (std::getline(ss, cell, ',') && i < featureLength) {
-            i++;
-            features.push_back(std::stod(cell));
-        }
-        DataContainer* container = new DataContainer(features, cell);
-        containers.push_back(container);
-
-        if (features.empty()) {
-            throw std::runtime_error("Feature vector is empty after parsing line: " + line);
-        }
-    }
-
-    return containers;
-}
 // Can be overloaded for other types, this works specifically for features = double. Returns ptr to last node
-Node<double>* runTrainingExample(const DataContainer* container, Node<double>* head) {
-    Node<double>* finishingContainer = head->runInput(container);
-    return finishingContainer;
-};
-//Runs all examples, results are stored in the unordered map of each node
-void runAllExamples(const std::vector<DataContainer*> containers, Node<double>* head) {
-    
-    for (int i = 0; i < containers.size(); i++) {
-        runTrainingExample(containers.at(i), head);
-    }
-}
 
+//Runs all examples, results are stored in the unordered map of each node
 
 
 
 int main() {
     //So I can easily change the type of the tree without updating every reference to it
     using dType = double;
-    dType defaultValue = 0.0;
-    Node<dType>* headNode = new Node<dType>(defaultValue);
-    DecisionTree<dType> tree(headNode); 
-    
-    const std::vector<DataContainer*> csvData = readCsvToContainers();
-    const int nClassifications = 3;
 
-    int numberOfNodes = tree.getTotalNodes();
-    //Todo: change datacontainers to be heap allocated and have nodes store pointers of the containers they have seen, we need a way to lookup from node to container
+    DecisionTree<dType> tree; 
     
-    tree.calculateAllImpurity();
-    auto featMap = tree.getHead()->getFeatureMap();
-    double headImpurity = headNode->getImpurity();
+
+
+    int total = tree.getTotalNodes();
+    tree.runTree();
+    
     return 0;
 }

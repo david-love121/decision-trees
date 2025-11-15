@@ -3,5 +3,5 @@ cc_library(
     name = "data_container",
     srcs = ["data_container.cpp"],
     hdrs = ["data_container.hpp"],
-    visibility = ["//visibility:public"],
+    visibility = ["//main:__pkg__", "//dataset:__pkg__"],
 )
