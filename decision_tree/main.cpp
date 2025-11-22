@@ -1,18 +1,5 @@
-
-#include "node.hpp"
-#include <fstream>
 #include <iostream>
-#include <memory>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
-#include <new>
-#include <stdexcept>
-#include <map>
-#include <unordered_map>
 #include "decision_tree.hpp"
-
 
 void trainingLoop(DecisionTree& tree, int epochs = 10) {
     double lastImpurity = 1.0;
@@ -27,15 +14,9 @@ void trainingLoop(DecisionTree& tree, int epochs = 10) {
 
 }
 
-
 int main() {
 
-
     DecisionTree tree; 
-    
-
-
-
     trainingLoop(tree);
     return 0;
 }

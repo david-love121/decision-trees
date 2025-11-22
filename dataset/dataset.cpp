@@ -1,5 +1,7 @@
 #include "dataset.hpp"
-
+#include <fstream>
+#include <stdexcept>
+#include <sstream>
 void Dataset::readCsvToContainers(const std::string& filePath = "./data/iris.data", int featureLength = 4) {
     std::ifstream file(filePath);
     if (!file.is_open()) {

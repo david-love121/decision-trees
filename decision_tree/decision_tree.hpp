@@ -1,6 +1,5 @@
 #pragma once
 
-#include <map>
 #include <memory>
 #include "../dataset/dataset.hpp"
 #include "./node.hpp"
@@ -40,7 +39,7 @@ public:
     //Runs the tree oiver the dataset
     void runTree() {
         for (int i = 0; i < dataset_.totalContainers(); i++) {
-            int returnId = head_->runInput(dataset_.getContainer(i));
+            head_->runInput(dataset_.getContainer(i));
         }
     }
 
