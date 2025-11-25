@@ -1,6 +1,12 @@
-# Visualizer Walkthrough
+# BST Visualizer
 
-I have created a new Qt6-based visualizer for the Binary Decision Tree.
+This is a Qt6 visualizer for a binary decision tree I wrote in CPP. I'm also using this project to learn about bazel build system and starlark.
+
+## Example screenshots
+### One split
+![screenshot](screenshot.png)
+### Fully split
+![screenshot-finished](screenshot-finished.png)
 
 ## Features
 - **Visualizes the Tree Structure**: Draws nodes and edges using `QGraphicsScene`.

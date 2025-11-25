@@ -2,6 +2,8 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
 #include <QGraphicsSimpleTextItem>
+#include <QGraphicsPathItem>
+#include <QPainterPath>
 #include <QPen>
 #include <QBrush>
 #include <QFont>
@@ -95,6 +97,63 @@ void TreeScene::updateNodeRecursive(const Node* node) {
             double cy = currentRect.center().y();
             
             circle->setRect(cx - r, cy - r, 2 * r, 2 * r);
+            
+            // Pie Chart for Leaves
+            if (node->getIsLeaf() && samples > 0) {
+                // Remove existing pie slices if any (hacky: we need to track them or just clear children of the circle if we made it a group, 
+                // but circle is an Item. We can make slices children of the circle item!)
+                qDeleteAll(circle->childItems());
+                
+                const auto& counts = node->getClassCounts();
+                double startAngle = 0.0;
+                
+                // Color map
+                std::unordered_map<std::string, QColor> colors;
+                colors["Iris-setosa"] = Qt::red;
+                colors["Iris-versicolor"] = Qt::green;
+                colors["Iris-virginica"] = Qt::blue;
+                
+                for (const auto& [label, count] : counts) {
+                    if (count == 0) continue;
+                    double spanAngle = (double)count / samples * 360.0;
+                    
+                    QPainterPath path;
+                    path.moveTo(r, r); // Center of circle (relative to item rect 0,0 is top-left, so center is r,r)
+                    // Actually circle item coords:
+                    // The circle item's rect is set to (cx-r, cy-r, 2r, 2r).
+                    // Its local coordinates: (0,0) is top-left of the bounding rect? No, 0,0 is the pos.
+                    // We haven't setPos on the circle, we setRect. So the circle is drawn at cx-r, cy-r in scene coords.
+                    // If we add child items, they are relative to parent.
+                    // Let's just draw on top in scene coords? No, children is better.
+                    // If circle is at scene 0,0 (default pos) but draws at rect (cx-r...), then children at 0,0 are at scene 0,0.
+                    // Better: Set circle pos to (cx, cy) and rect to (-r, -r, 2r, 2r).
+                    // But we didn't do that in drawTree.
+                    // Let's just use scene coords for slices or use a group.
+                    // Simpler: Just add slices to scene and track them? Too complex.
+                    // Let's use the child item approach but be careful with coordinates.
+                    // Circle item is at (0,0) scene pos (default). It draws at (cx-r, cy-r).
+                    // So child item at (cx, cy) would be at center.
+                    
+                    QPainterPath slicePath;
+                    slicePath.moveTo(cx, cy);
+                    slicePath.arcTo(cx - r, cy - r, 2 * r, 2 * r, startAngle, spanAngle);
+                    slicePath.closeSubpath();
+                    
+                    QGraphicsPathItem* slice = new QGraphicsPathItem(slicePath, circle); // Parent is circle
+                    // Wait, if parent is circle, coordinates are relative to circle.
+                    // Circle is at 0,0. So relative = scene.
+                    // So (cx, cy) is correct.
+                    
+                    QColor color = colors.count(label) ? colors[label] : Qt::gray;
+                    slice->setBrush(QBrush(color));
+                    slice->setPen(Qt::NoPen);
+                    slice->setZValue(0.5); // On top of white circle background
+                    
+                    startAngle += spanAngle;
+                }
+            } else {
+                 qDeleteAll(circle->childItems());
+            }
             
             // Update Text
             QString text;

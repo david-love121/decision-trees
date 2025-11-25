@@ -54,6 +54,7 @@ public:
     const int getNumberSamples() const {
         return nSamples_;
     }
+    const std::unordered_map<std::string, int>& getClassCounts() const { return classCounts_; }
 
     void setClassifierValue(double value) { classifierValue_ = value; }
     void setFeatureIndex(int newIndex) {featureIndex_ = newIndex; }
