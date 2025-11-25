@@ -21,6 +21,9 @@ public:
     static int getTotalNodes() {
         return totalNodes_;
     }
+    const Node* getHeadNode() const { return head_.get(); }
+    Node* getHeadNode() { return head_.get(); }
+    const Dataset& getDataset() const { return dataset_; }
 
     void runTree(DataContainer& input) { head_->runInput(input); }
     double calculateAllImpurity() {
@@ -38,6 +41,7 @@ public:
 
     //Runs the tree oiver the dataset
     void runTree() {
+        resetTree();
         for (int i = 0; i < dataset_.totalContainers(); i++) {
             head_->runInput(dataset_.getContainer(i));
         }

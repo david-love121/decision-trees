@@ -3,4 +3,5 @@ build --repo_env=CC=/usr/bin/clang
 build --repo_env=CXX=/usr/bin/clang++
 build --copt="-g"
 build --copt="-fno-limit-debug-info"
+build --strip=never
 common --enable_bzlmod

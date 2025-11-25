@@ -44,6 +44,8 @@ public:
     const int getId() const { return id_; }
     const bool getIsLeaf() const { return leftChild_ == nullptr && rightChild_ == nullptr; } 
     const double getClassifierValue() const { return classifierValue_; }
+    const Node* getLeftChild() const { return leftChild_.get(); }
+    const Node* getRightChild() const { return rightChild_.get(); }
 
     const int getFeatureIndex() const { return featureIndex_; }
     const double getImpurity() {

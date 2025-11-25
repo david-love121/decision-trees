@@ -4,5 +4,5 @@ cc_library(
     srcs = ["dataset.cpp"],
     hdrs = ["dataset.hpp"],
     deps = ["//data_container:data_container"],
-    visibility = ["//decision_tree:__pkg__"],
+    visibility = ["//visibility:public"],
 )
